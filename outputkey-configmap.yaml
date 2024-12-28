@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  REDIS_OUTPUT_KEY: juniolima-proj3-output
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-12-24T20:12:34Z"
+  name: outputkey
+  namespace: juniolima
+  resourceVersion: "6876550"
+  uid: 853dab40-c127-4f40-86af-0a29c25f73e7

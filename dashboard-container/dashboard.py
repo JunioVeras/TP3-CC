@@ -29,28 +29,34 @@ def plot_cpu_usage():
     for i in range(8):
         plt.plot(time_history, cpu_history[f'cpu{i}'], label=f'CPU {i}')
     plt.xlabel('Time')
+    plt.xticks(rotation=90)
     plt.ylabel('CPU Usage (%)')
     plt.title('Average CPU Usage per Core (60 seconds)')
     plt.legend(loc='upper left')
     st.pyplot(plt)
+    plt.close()
 
 def plot_network_usage():
     plt.figure(figsize=(10, 5))
     plt.plot(time_history, network_history, label='Network Egress', color='lightgreen')
     plt.xlabel('Time')
+    plt.xticks(rotation=90)
     plt.ylabel('Percent (%)')
     plt.title('Network Egress Usage')
     plt.legend(loc='upper left')
     st.pyplot(plt)
+    plt.close()
 
 def plot_memory_cache():
     plt.figure(figsize=(10, 5))
     plt.plot(time_history, memory_cache_history, label='Memory Cache', color='lightcoral')
     plt.xlabel('Time')
+    plt.xticks(rotation=90)
     plt.ylabel('Percent (%)')
     plt.title('Memory Cache Usage')
     plt.legend(loc='upper left')
     st.pyplot(plt)
+    plt.close()
 
 def main():
     placeholder = st.empty()

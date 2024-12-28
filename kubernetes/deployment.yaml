@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streamlit-dashboard
+  labels:
+    app: streamlit-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit-dashboard
+  template:
+    metadata:
+      labels:
+        app: streamlit-dashboard
+    spec:
+      containers:
+      - name: streamlit-dashboard
+        image: junioveras/streamlit-dashboard:v1
+        ports:
+        - containerPort: 8501
+        env:
+        - name: REDIS_OUTPUT_KEY
+          value: "juniolima-proj3-output" 
+        - name: REDIS_HOST
+          value: "192.168.121.48"
+

@@ -1,6 +1,6 @@
 def handler(input: dict, context: object) -> dict[str, float]:
-    bytes_sent = input["net_io_counters_eth0-bytes_sent1"]
-    bytes_recv = input["net_io_counters_eth0-bytes_recv1"]
+    bytes_sent = input["net_io_counters_eth0-bytes_sent"]
+    bytes_recv = input["net_io_counters_eth0-bytes_recv"]
     if bytes_sent + bytes_recv > 0:
         percent_network_egress = (bytes_sent / (bytes_sent + bytes_recv)) * 100
     else:

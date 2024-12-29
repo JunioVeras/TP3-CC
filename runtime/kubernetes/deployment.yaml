@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: juniolima-serverless-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: juniolima-serverless-redis
+  template:
+    metadata:
+      labels:
+        app: juniolima-serverless-redis
+    spec:
+      containers:
+      - name: juniolima-serverless-redis
+        image: junioveras/serverless-runtime:v1
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 300Mi
+        volumeMounts:
+        - name: pyfile
+          mountPath: "/opt/usermodule.py"
+          subPath: pyfile
+        - name: zipfile
+          mountPath: "/opt/function.zip"
+          subPath: zipfile
+        env:
+        - name: REDIS_HOST
+          value: "192.168.121.48"
+        - name: REDIS_PORT
+          value: "6379"
+        - name: REDIS_INPUT_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: REDIS_INPUT_KEY
+        - name: REDIS_OUTPUT_KEY
+          valueFrom:
+            configMapKeyRef:
+              name: outputkey
+              key: REDIS_OUTPUT_KEY
+        - name: MONITORING_PERIOD
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: MONITORING_PERIOD
+        - name: ZIP_PATH
+          value: "/opt/function.zip"
+        - name: ENTRY_FUNCTION
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: ENTRY_FUNCTION
+      volumes:
+      - name: pyfile
+        configMap:
+          name: pyfile
+      - name: zipfile
+        configMap:
+          name: zipfile
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  REDIS_INPUT_KEY: "metrics"
+  MONITORING_PERIOD: "5"
+  ENTRY_FUNCTION: "handler"
+  REDIS_OUTPUT_KEY: "juniolima-proj3-output"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zipfile
+data:
+  zipfile: |
+    # Conteúdo do arquivo ZIP codificado em base64 (ou utilize outra abordagem como URL).

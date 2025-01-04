@@ -1,3 +1,7 @@
+from typing import Any
+import re
+from datetime import datetime, timedelta
+
 def handler(input: dict, context: object) -> dict[str, float]:
     bytes_sent = input["net_io_counters_eth0-bytes_sent"]
     bytes_recv = input["net_io_counters_eth0-bytes_recv"]
@@ -15,14 +19,26 @@ def handler(input: dict, context: object) -> dict[str, float]:
         percent_memory_cache = 0.0
 
     cpu_utilization = [input[key] for key in input if key.startswith("cpu_percent-")]
+    
     if "cpu_history" not in context.env:
         context.env["cpu_history"] = {i: [] for i in range(len(cpu_utilization))}
+    
     avg_cpu_utilization = {}
+    date_format = "%Y-%m-%d %H:%M:%S.%f"
+    curTime = datetime.strptime(input["timestamp"], date_format)
+
     for i, utilization in enumerate(cpu_utilization):
-        context.env["cpu_history"][i].append(utilization)
-        if len(context.env["cpu_history"][i]) > 60:
-            context.env["cpu_history"][i].pop(0)
-        avg_cpu_utilization[f"avg-util-cpu{i}-60sec"] = sum(context.env["cpu_history"][i]) / len(context.env["cpu_history"][i])
+        context.env["cpu_history"][i].append({"time": curTime, "value": utilization})
+        
+        while len(context.env["cpu_history"][i]) > 1:
+            if abs(context.env["cpu_history"][i][-1]["time"] - context.env["cpu_history"][i][0]["time"]) > timedelta(minutes=1):
+                context.env["cpu_history"][i].pop(0)
+            else:
+                break
+
+        avg_cpu_utilization[f"avg-util-cpu{i}-1min"] = sum(
+            entry["value"] for entry in context.env["cpu_history"][i]
+        ) / len(context.env["cpu_history"][i])
 
     return {
         "percent-network-egress": percent_network_egress,

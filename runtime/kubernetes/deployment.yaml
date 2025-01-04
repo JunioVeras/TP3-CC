@@ -26,7 +26,7 @@ spec:
           mountPath: "/opt/usermodule.py"
           subPath: pyfile
         - name: zipfile
-          mountPath: "/opt/function.zip"
+          mountPath: "/opt/user_function.zip"
           subPath: zipfile
         env:
         - name: REDIS_HOST
@@ -48,8 +48,14 @@ spec:
             configMapKeyRef:
               name: config
               key: MONITORING_PERIOD
-        - name: ZIP_PATH
-          value: "/opt/function.zip"
+        - name: PYFILE_OR_ZIP
+          value: "zip"
+        - name: ZIP_FILE_PATH
+          value: "/opt/user_function.zip"
+        - name: ZIP_ENTRY_FILE
+          value: "handler.py"
+        - name: PYFILE_PATH
+          value: "/opt/usermodule.py"
         - name: ENTRY_FUNCTION
           valueFrom:
             configMapKeyRef:
@@ -81,4 +87,15 @@ metadata:
   name: zipfile
 data:
   zipfile: |
-    # Conteúdo do arquivo ZIP codificado em base64 (ou utilize outra abordagem como URL).
+    UEsDBBQAAAAIACSInVnC9tWwzgEAAHMFAAAHABwAbWFpbi5weVVUCQADhKpxZ5yucWd1eAsAAQTo
+    AwAABOgDAACNU8uOozAQvOcrLE6QCRn2ModIOz+CkOWYJniH2MhuMpuN8u/bGDaYPDbhhLtc1VWt
+    dgkVq4UuG7Cx0m2HG1YqiSsmjUb4TUez/QUSE5Z+eiR3aFesaozAYrNg9G2PCI470Mh+Mq+RRxqQ
+    K8Ol6UjFOg5YZ+l0MSoCpgV5eInZXxyZqgrbvoVKnywbfPVfC1bSDU6q38Z+cdhZcI66xQH9fXYK
+    xZKELdmPLPN60Dh4QTlbZwt/aw97Y49cCllDOQU8KIudaPgApwM8xhop266qKPtDzojPSWhQNA8p
+    Hp2GN+PcnVjovp9XPI/zduU1oSmGos8Hd9XgMjbZdrxD1ag/ApXRBOVDpC84FqwyltEPpRyC9mHo
+    vHYoLLpvhXUc9QpjlzRKLpl9vVYOqW3EtMFeZFzzNejDZDEo5jNWQW5OasPywYjqFazQO4gb0PGV
+    8yQ5e0Vx2PHbUKcB9DIrFmKkCbrbgxUIN5qvmMxVsRZtC7qMQ+qFSbPwdv8nkNBWfARr8bxja9o4
+    m5rcSZ1XEVXTvpISdFLn9CNzIP1YXbd/5uj9BdvDDlnAzmp2uriJ/u3D+FzT4blGmwfveHXLDN9r
+    wAvXeGItl3fye/S8+AtQSwECHgMUAAAACAAkiJ1ZwvbVsM4BAABzBQAABwAYAAAAAAABAAAApIEA
+    AAAAbWFpbi5weVVUBQADhKpxZ3V4CwABBOgDAAAE6AMAAFBLBQYAAAAAAQABAE0AAAAPAgAAAAA=
+

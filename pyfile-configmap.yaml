@@ -17,7 +17,7 @@ data:
     curTime, \"value\": utilization})\n        \n        while len(context.env[\"cpu_history\"][i])
     > 1:\n            if abs(context.env[\"cpu_history\"][i][-1][\"time\"] - context.env[\"cpu_history\"][i][0][\"time\"])
     > timedelta(minutes=1):\n                context.env[\"cpu_history\"][i].pop(0)\n
-    \           else:\n                break\n\n        avg_cpu_utilization[f\"avg-util-cpu{i}-1min\"]
+    \           else:\n                break\n\n        avg_cpu_utilization[f\"avg-util-cpu{i}-60sec\"]
     = sum(\n            entry[\"value\"] for entry in context.env[\"cpu_history\"][i]\n
     \       ) / len(context.env[\"cpu_history\"][i])\n\n    return {\n        \"percent-network-egress\":
     percent_network_egress,\n        \"percent-memory-cache\": percent_memory_cache,\n

@@ -36,7 +36,7 @@ def handler(input: dict, context: object) -> dict[str, float]:
             else:
                 break
 
-        avg_cpu_utilization[f"avg-util-cpu{i}-1min"] = sum(
+        avg_cpu_utilization[f"avg-util-cpu{i}-60sec"] = sum(
             entry["value"] for entry in context.env["cpu_history"][i]
         ) / len(context.env["cpu_history"][i])
 

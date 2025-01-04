@@ -87,17 +87,22 @@ metadata:
   name: zipfile
 data:
   zipfile: |
-    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
+    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
+    BgAAAAABAAEATQAAAM4CAAAAAA==
+
 
 ---
 apiVersion: v1
@@ -105,35 +110,25 @@ kind: ConfigMap
 metadata:
   name: pyfile
 data:
-  pyfile: |
-    def handler(input: dict, context: object) -> dict[str, float]:
-        bytes_sent = input["net_io_counters_eth0-bytes_sent"]
-        bytes_recv = input["net_io_counters_eth0-bytes_recv"]
-        if bytes_sent + bytes_recv > 0:
-            percent_network_egress = (bytes_sent / (bytes_sent + bytes_recv)) * 100
-        else:
-            percent_network_egress = 0.0
-
-        memory_cached = input["virtual_memory-cached"]
-        memory_buffers = input["virtual_memory-buffers"]
-        memory_total = input["virtual_memory-total"]
-        if memory_total > 0:
-            percent_memory_cache = ((memory_cached + memory_buffers) / memory_total) * 100
-        else:
-            percent_memory_cache = 0.0
-
-        cpu_utilization = [input[key] for key in input if key.startswith("cpu_percent-")]
-        if "cpu_history" not in context.env:
-            context.env["cpu_history"] = {i: [] for i in range(len(cpu_utilization))}
-        avg_cpu_utilization = {}
-        for i, utilization in enumerate(cpu_utilization):
-            context.env["cpu_history"][i].append(utilization)
-            if len(context.env["cpu_history"][i]) > 60:
-                context.env["cpu_history"][i].pop(0)
-            avg_cpu_utilization[f"avg-util-cpu{i}-60sec"] = sum(context.env["cpu_history"][i]) / len(context.env["cpu_history"][i])
-
-        return {
-            "percent-network-egress": percent_network_egress,
-            "percent-memory-cache": percent_memory_cache,
-            **avg_cpu_utilization
-        }
+  pyfile: "from typing import Any\nimport re\nfrom datetime import datetime, timedelta\n\ndef
+    handler(input: dict, context: object) -> dict[str, float]:\n    bytes_sent = input[\"net_io_counters_eth0-bytes_sent\"]\n
+    \   bytes_recv = input[\"net_io_counters_eth0-bytes_recv\"]\n    if bytes_sent
+    + bytes_recv > 0:\n        percent_network_egress = (bytes_sent / (bytes_sent
+    + bytes_recv)) * 100\n    else:\n        percent_network_egress = 0.0\n\n    memory_cached
+    = input[\"virtual_memory-cached\"]\n    memory_buffers = input[\"virtual_memory-buffers\"]\n
+    \   memory_total = input[\"virtual_memory-total\"]\n    if memory_total > 0:\n
+    \       percent_memory_cache = ((memory_cached + memory_buffers) / memory_total)
+    * 100\n    else:\n        percent_memory_cache = 0.0\n\n    cpu_utilization =
+    [input[key] for key in input if key.startswith(\"cpu_percent-\")]\n    \n    if
+    \"cpu_history\" not in context.env:\n        context.env[\"cpu_history\"] = {i:
+    [] for i in range(len(cpu_utilization))}\n    \n    avg_cpu_utilization = {}\n
+    \   date_format = \"%Y-%m-%d %H:%M:%S.%f\"\n    curTime = datetime.strptime(input[\"timestamp\"],
+    date_format)\n\n    for i, utilization in enumerate(cpu_utilization):\n        context.env[\"cpu_history\"][i].append({\"time\":
+    curTime, \"value\": utilization})\n        \n        while len(context.env[\"cpu_history\"][i])
+    > 1:\n            if abs(context.env[\"cpu_history\"][i][-1][\"time\"] - context.env[\"cpu_history\"][i][0][\"time\"])
+    > timedelta(minutes=1):\n                context.env[\"cpu_history\"][i].pop(0)\n
+    \           else:\n                break\n\n        avg_cpu_utilization[f\"avg-util-cpu{i}-1min\"]
+    = sum(\n            entry[\"value\"] for entry in context.env[\"cpu_history\"][i]\n
+    \       ) / len(context.env[\"cpu_history\"][i])\n\n    return {\n        \"percent-network-egress\":
+    percent_network_egress,\n        \"percent-memory-cache\": percent_memory_cache,\n
+    \       **avg_cpu_utilization\n    }\n"

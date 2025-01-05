@@ -25,9 +25,6 @@ spec:
         - name: pyfile
           mountPath: "/opt/usermodule.py"
           subPath: pyfile
-        - name: zipfile
-          mountPath: "/opt/user_function.zip"
-          subPath: zipfile
         env:
         - name: REDIS_HOST
           value: "192.168.121.48"
@@ -61,13 +58,15 @@ spec:
             configMapKeyRef:
               name: config
               key: ENTRY_FUNCTION
+        - name: ZIP_BASE64
+          valueFrom:
+            configMapKeyRef:
+              name: config
+              key: ZIP_BASE64
       volumes:
       - name: pyfile
         configMap:
           name: pyfile
-      - name: zipfile
-        configMap:
-          name: zipfile
 
 ---
 apiVersion: v1
@@ -79,31 +78,7 @@ data:
   MONITORING_PERIOD: "5"
   ENTRY_FUNCTION: "handler"
   REDIS_OUTPUT_KEY: "juniolima-proj3-output"
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: zipfile
-data:
-  zipfile: |
-    UEsDBBQAAAAIAECXJFqUGF2OjwIAADoHAAAHABwAbWFpbi5weVVUCQAD5655Z+eueWd1eAsAAQTo
-    AwAABOgDAACNVE2PmzAQvfMrLCQk2IWUXHqItCv11ktP7aVCCDkwJO6Cjewh2zTKf6+NCZgk+8EB
-    2Z55b+aNPVNL0RI8dozvCGs7IZF840dvXErwauNQUQRkLVxcLvuYmH8FDVLPq6Ame8qrBmTIeNfj
-    hlSsxJiUgiP81Vux/QMlRiR5HiyZQhmTuhEU841H9Lc9IqhCAUfyRAaOzOeABRNFKXrNIlUBuE+T
-    2dHPHaSE8vAppHEckax2wz66TM8ktXmZrwNZao9Cs74K+VLAToJSOlrowL8sdi5ZFJEHsk7TgQ8a
-    BZ9gTlepN3i10Ap5LEpa7qGaBR6YxJ42hTUn1jzKGiHbvq619jcxo30JQoG0eRMyWOfiLTB3K+Zm
-    b+oVLuU8XuUa6Sq6pB8X7irAVLay64seWcP+UWSCa1NmJb3AMSe1kEQvtEor1IjR+5VCKlG9MtyH
-    vmEYoyR+ZDVfhA/GPVOoY/uECzRM41tfAT/MeTqH2QKV65RObEMymw0zDJLyHYQN8PAq/Sg6z/Hp
-    YVfcyjtZD9OehSZsqekjP/idBG0SVCT4vgl+bIKfq6D2bYF6+cu09dPU0Vq97MwiHC/frHVF2s7P
-    Y5c4siUe0o6Jm4bWALxvQWrnGw2fKUrG8hXtOuBVeBri+5tLpjHxD7TpzYnDeo4m1mnxumcNkKGM
-    7wWK9JNdz0mNV0u36n1YlqxzWxt9h8n7WrJ0cjXRpokZtoz3ejw8raNlAh9XpxNdmEYL0LIzLt9W
-    An3xpuM7ryarfX2amJNEm07snHxNFZTD21R9Gy6jcJTHbLwD+2iHo6unf5vyxGK6++NbsSlLwF5y
-    cprA/qUXx1GZ2FGpX8P9GRrfIt1Z6eDcETKjHh7uVGywnr3/UEsBAh4DFAAAAAgAQJckWpQYXY6P
-    AgAAOgcAAAcAGAAAAAAAAQAAAKSBAAAAAG1haW4ucHlVVAUAA+eueWd1eAsAAQToAwAABOgDAABQ
-    SwUGAAAAAAEAAQBNAAAA0AIAAAAA
-
-
+  ZIP_BASE64: "UEsDBBQAAAAIAECXJFqUGF2OjwIAADoHAAAHABwAbWFpbi5weVVUCQAD5655Z+eueWd1eAsAAQToAwAABOgDAACNVE2PmzAQvfMrLCQk2IWUXHqItCv11ktP7aVCCDkwJO6Cjewh2zTKf6+NCZgk+8EB2Z55b+aNPVNL0RI8dozvCGs7IZF840dvXErwauNQUQRkLVxcLvuYmH8FDVLPq6Ame8qrBmTIeNfjhlSsxJiUgiP81Vux/QMlRiR5HiyZQhmTuhEU841H9Lc9IqhCAUfyRAaOzOeABRNFKXrNIlUBuE+T2dHPHaSE8vAppHEckax2wz66TM8ktXmZrwNZao9Cs74K+VLAToJSOlrowL8sdi5ZFJEHsk7TgQ8aBZ9gTlepN3i10Ap5LEpa7qGaBR6YxJ42hTUn1jzKGiHbvq619jcxo30JQoG0eRMyWOfiLTB3K+Zmb+oVLuU8XuUa6Sq6pB8X7irAVLay64seWcP+UWSCa1NmJb3AMSe1kEQvtEor1IjR+5VCKlG9MtyHvmEYoyR+ZDVfhA/GPVOoY/uECzRM41tfAT/MeTqH2QKV65RObEMymw0zDJLyHYQN8PAq/Sg6z/HpYVfcyjtZD9OehSZsqekjP/idBG0SVCT4vgl+bIKfq6D2bYF6+cu09dPU0Vq97MwiHC/frHVF2s7PY5c4siUe0o6Jm4bWALxvQWrnGw2fKUrG8hXtOuBVeBri+5tLpjHxD7TpzYnDeo4m1mnxumcNkKGM7wWK9JNdz0mNV0u36n1YlqxzWxt9h8n7WrJ0cjXRpokZtoz3ejw8raNlAh9XpxNdmEYL0LIzLt9WAn3xpuM7ryarfX2amJNEm07snHxNFZTD21R9Gy6jcJTHbLwD+2iHo6unf5vyxGK6++NbsSlLwF5ycprA/qUXx1GZ2FGpX8P9GRrfIt1Z6eDcETKjHh7uVGywnr3/UEsBAh4DFAAAAAgAQJckWpQYXY6PAgAAOgcAAAcAGAAAAAAAAQAAAKSBAAAAAG1haW4ucHlVVAUAA+eueWd1eAsAAQToAwAABOgDAABQSwUGAAAAAAEAAQBNAAAA0AIAAAAA"
 
 ---
 apiVersion: v1
@@ -128,7 +103,7 @@ data:
     curTime, \"value\": utilization})\n        \n        while len(context.env[\"cpu_history\"][i])
     > 1:\n            if abs(context.env[\"cpu_history\"][i][-1][\"time\"] - context.env[\"cpu_history\"][i][0][\"time\"])
     > timedelta(minutes=1):\n                context.env[\"cpu_history\"][i].pop(0)\n
-    \           else:\n                break\n\n        avg_cpu_utilization[f\"avg-util-cpu{i}-1min\"]
+    \           else:\n                break\n\n        avg_cpu_utilization[f\"avg-util-cpu{i}-60sec\"]
     = sum(\n            entry[\"value\"] for entry in context.env[\"cpu_history\"][i]\n
     \       ) / len(context.env[\"cpu_history\"][i])\n\n    return {\n        \"percent-network-egress\":
     percent_network_egress,\n        \"percent-memory-cache\": percent_memory_cache,\n

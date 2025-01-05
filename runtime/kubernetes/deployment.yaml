@@ -63,6 +63,8 @@ spec:
             configMapKeyRef:
               name: config
               key: ZIP_BASE64
+      imagePullSecrets:
+      - name: regcred
       volumes:
       - name: pyfile
         configMap:
